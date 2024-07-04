@@ -1,0 +1,512 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		43D642069F25ECC879BF2017 /* Pods_UIKitAVPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 67016ACDC67700CA8B7DFA67 /* Pods_UIKitAVPlayer.framework */; };
+		CD0E6C992C343BAD003BCD36 /* InputUrlTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0E6C982C343BAD003BCD36 /* InputUrlTextFieldView.swift */; };
+		CD0E6C9B2C3442FB003BCD36 /* InputUrlTextFieldViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0E6C9A2C3442FB003BCD36 /* InputUrlTextFieldViewViewController.swift */; };
+		CD0E6C9D2C3448CE003BCD36 /* InputUrlTextFieldButtonTapDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0E6C9C2C3448CE003BCD36 /* InputUrlTextFieldButtonTapDelegate.swift */; };
+		CD0E6CC52C36BA1C003BCD36 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = CD0E6CC42C36BA1C003BCD36 /* .gitignore */; };
+		CD44A77A2C2C4A1E00022D7E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD44A7792C2C4A1E00022D7E /* AppDelegate.swift */; };
+		CD44A77C2C2C4A1E00022D7E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD44A77B2C2C4A1E00022D7E /* SceneDelegate.swift */; };
+		CD44A77E2C2C4A1E00022D7E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD44A77D2C2C4A1E00022D7E /* ViewController.swift */; };
+		CD44A7832C2C4A2000022D7E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD44A7822C2C4A2000022D7E /* Assets.xcassets */; };
+		CD44A7862C2C4A2000022D7E /* Base in Resources */ = {isa = PBXBuildFile; fileRef = CD44A7852C2C4A2000022D7E /* Base */; };
+		CD44A78F2C2E404D00022D7E /* VideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD44A78E2C2E404D00022D7E /* VideoViewController.swift */; };
+		CD44A7912C30096300022D7E /* MainViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD44A7902C30096300022D7E /* MainViewViewController.swift */; };
+		CD44A7942C314A9C00022D7E /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD44A7932C314A9C00022D7E /* DataModel.swift */; };
+		CD44A7962C31BC4600022D7E /* HomePageNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD44A7952C31BC4600022D7E /* HomePageNavigationViewController.swift */; };
+		CD44A7992C32940700022D7E /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD44A7982C32940700022D7E /* MainView.swift */; };
+		CD44A79B2C32ABD800022D7E /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD44A79A2C32ABD800022D7E /* PlayerView.swift */; };
+		CD44A79D2C32EE5500022D7E /* AVPlayerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD44A79C2C32EE5500022D7E /* AVPlayerModel.swift */; };
+		CD44A7A02C33100700022D7E /* ClipRecordDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD44A79F2C33100600022D7E /* ClipRecordDelegate.swift */; };
+		CD44A7A22C33102D00022D7E /* PlayerViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD44A7A12C33102D00022D7E /* PlayerViewDelegate.swift */; };
+		CD44A7A42C33107900022D7E /* MainViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD44A7A32C33107900022D7E /* MainViewDelegate.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		428EDD42C2E229538BC23490 /* Pods-UIKitAVPlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIKitAVPlayer.debug.xcconfig"; path = "Target Support Files/Pods-UIKitAVPlayer/Pods-UIKitAVPlayer.debug.xcconfig"; sourceTree = "<group>"; };
+		43F21CC7EAABDBDCDBE073E2 /* Pods-UIKitAVPlayer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIKitAVPlayer.release.xcconfig"; path = "Target Support Files/Pods-UIKitAVPlayer/Pods-UIKitAVPlayer.release.xcconfig"; sourceTree = "<group>"; };
+		67016ACDC67700CA8B7DFA67 /* Pods_UIKitAVPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UIKitAVPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD0E6C982C343BAD003BCD36 /* InputUrlTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputUrlTextFieldView.swift; sourceTree = "<group>"; };
+		CD0E6C9A2C3442FB003BCD36 /* InputUrlTextFieldViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputUrlTextFieldViewViewController.swift; sourceTree = "<group>"; };
+		CD0E6C9C2C3448CE003BCD36 /* InputUrlTextFieldButtonTapDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputUrlTextFieldButtonTapDelegate.swift; sourceTree = "<group>"; };
+		CD0E6CC42C36BA1C003BCD36 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		CD44A7762C2C4A1E00022D7E /* UIKitAVPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UIKitAVPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD44A7792C2C4A1E00022D7E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		CD44A77B2C2C4A1E00022D7E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		CD44A77D2C2C4A1E00022D7E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		CD44A7822C2C4A2000022D7E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CD44A7852C2C4A2000022D7E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		CD44A7872C2C4A2000022D7E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CD44A78E2C2E404D00022D7E /* VideoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewController.swift; sourceTree = "<group>"; };
+		CD44A7902C30096300022D7E /* MainViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewViewController.swift; sourceTree = "<group>"; };
+		CD44A7932C314A9C00022D7E /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
+		CD44A7952C31BC4600022D7E /* HomePageNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageNavigationViewController.swift; sourceTree = "<group>"; };
+		CD44A7982C32940700022D7E /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		CD44A79A2C32ABD800022D7E /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
+		CD44A79C2C32EE5500022D7E /* AVPlayerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVPlayerModel.swift; sourceTree = "<group>"; };
+		CD44A79F2C33100600022D7E /* ClipRecordDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipRecordDelegate.swift; sourceTree = "<group>"; };
+		CD44A7A12C33102D00022D7E /* PlayerViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewDelegate.swift; sourceTree = "<group>"; };
+		CD44A7A32C33107900022D7E /* MainViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewDelegate.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CD44A7732C2C4A1E00022D7E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				43D642069F25ECC879BF2017 /* Pods_UIKitAVPlayer.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1318FDE5D1C1199136F9E386 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				67016ACDC67700CA8B7DFA67 /* Pods_UIKitAVPlayer.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		1E41F95BBF9C0E6A7E641579 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				428EDD42C2E229538BC23490 /* Pods-UIKitAVPlayer.debug.xcconfig */,
+				43F21CC7EAABDBDCDBE073E2 /* Pods-UIKitAVPlayer.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		CD44A76D2C2C4A1E00022D7E = {
+			isa = PBXGroup;
+			children = (
+				CD0E6CC42C36BA1C003BCD36 /* .gitignore */,
+				CD44A7782C2C4A1E00022D7E /* UIKitAVPlayer */,
+				CD44A7772C2C4A1E00022D7E /* Products */,
+				1E41F95BBF9C0E6A7E641579 /* Pods */,
+				1318FDE5D1C1199136F9E386 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		CD44A7772C2C4A1E00022D7E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CD44A7762C2C4A1E00022D7E /* UIKitAVPlayer.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CD44A7782C2C4A1E00022D7E /* UIKitAVPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				CD44A79E2C330FD700022D7E /* Protocol */,
+				CD44A7922C314A8700022D7E /* Model */,
+				CD44A7972C32938C00022D7E /* View */,
+				CD44A78D2C2E401400022D7E /* Controller */,
+				CD44A7792C2C4A1E00022D7E /* AppDelegate.swift */,
+				CD44A77B2C2C4A1E00022D7E /* SceneDelegate.swift */,
+				CD44A77D2C2C4A1E00022D7E /* ViewController.swift */,
+				CD44A7822C2C4A2000022D7E /* Assets.xcassets */,
+				CD44A7842C2C4A2000022D7E /* LaunchScreen.storyboard */,
+				CD44A7872C2C4A2000022D7E /* Info.plist */,
+			);
+			path = UIKitAVPlayer;
+			sourceTree = "<group>";
+		};
+		CD44A78D2C2E401400022D7E /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				CD44A78E2C2E404D00022D7E /* VideoViewController.swift */,
+				CD44A7902C30096300022D7E /* MainViewViewController.swift */,
+				CD44A7952C31BC4600022D7E /* HomePageNavigationViewController.swift */,
+				CD0E6C9A2C3442FB003BCD36 /* InputUrlTextFieldViewViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		CD44A7922C314A8700022D7E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CD44A7932C314A9C00022D7E /* DataModel.swift */,
+				CD44A79C2C32EE5500022D7E /* AVPlayerModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		CD44A7972C32938C00022D7E /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CD44A7982C32940700022D7E /* MainView.swift */,
+				CD44A79A2C32ABD800022D7E /* PlayerView.swift */,
+				CD0E6C982C343BAD003BCD36 /* InputUrlTextFieldView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CD44A79E2C330FD700022D7E /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				CD44A79F2C33100600022D7E /* ClipRecordDelegate.swift */,
+				CD44A7A12C33102D00022D7E /* PlayerViewDelegate.swift */,
+				CD44A7A32C33107900022D7E /* MainViewDelegate.swift */,
+				CD0E6C9C2C3448CE003BCD36 /* InputUrlTextFieldButtonTapDelegate.swift */,
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CD44A7752C2C4A1E00022D7E /* UIKitAVPlayer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CD44A78A2C2C4A2000022D7E /* Build configuration list for PBXNativeTarget "UIKitAVPlayer" */;
+			buildPhases = (
+				E2B3A09FB1BA78B057247521 /* [CP] Check Pods Manifest.lock */,
+				CD44A7722C2C4A1E00022D7E /* Sources */,
+				CD44A7732C2C4A1E00022D7E /* Frameworks */,
+				CD44A7742C2C4A1E00022D7E /* Resources */,
+				3BF4B97B271579023AF08909 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = UIKitAVPlayer;
+			productName = UIKitAVPlayer;
+			productReference = CD44A7762C2C4A1E00022D7E /* UIKitAVPlayer.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CD44A76E2C2C4A1E00022D7E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					CD44A7752C2C4A1E00022D7E = {
+						CreatedOnToolsVersion = 15.4;
+					};
+				};
+			};
+			buildConfigurationList = CD44A7712C2C4A1E00022D7E /* Build configuration list for PBXProject "UIKitAVPlayer" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CD44A76D2C2C4A1E00022D7E;
+			productRefGroup = CD44A7772C2C4A1E00022D7E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CD44A7752C2C4A1E00022D7E /* UIKitAVPlayer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CD44A7742C2C4A1E00022D7E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CD44A7832C2C4A2000022D7E /* Assets.xcassets in Resources */,
+				CD0E6CC52C36BA1C003BCD36 /* .gitignore in Resources */,
+				CD44A7862C2C4A2000022D7E /* Base in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3BF4B97B271579023AF08909 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-UIKitAVPlayer/Pods-UIKitAVPlayer-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-UIKitAVPlayer/Pods-UIKitAVPlayer-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UIKitAVPlayer/Pods-UIKitAVPlayer-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E2B3A09FB1BA78B057247521 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-UIKitAVPlayer-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CD44A7722C2C4A1E00022D7E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CD44A7A02C33100700022D7E /* ClipRecordDelegate.swift in Sources */,
+				CD44A79B2C32ABD800022D7E /* PlayerView.swift in Sources */,
+				CD44A77E2C2C4A1E00022D7E /* ViewController.swift in Sources */,
+				CD44A7992C32940700022D7E /* MainView.swift in Sources */,
+				CD44A7912C30096300022D7E /* MainViewViewController.swift in Sources */,
+				CD44A77A2C2C4A1E00022D7E /* AppDelegate.swift in Sources */,
+				CD44A7A22C33102D00022D7E /* PlayerViewDelegate.swift in Sources */,
+				CD0E6C992C343BAD003BCD36 /* InputUrlTextFieldView.swift in Sources */,
+				CD44A7962C31BC4600022D7E /* HomePageNavigationViewController.swift in Sources */,
+				CD44A77C2C2C4A1E00022D7E /* SceneDelegate.swift in Sources */,
+				CD0E6C9B2C3442FB003BCD36 /* InputUrlTextFieldViewViewController.swift in Sources */,
+				CD0E6C9D2C3448CE003BCD36 /* InputUrlTextFieldButtonTapDelegate.swift in Sources */,
+				CD44A78F2C2E404D00022D7E /* VideoViewController.swift in Sources */,
+				CD44A7A42C33107900022D7E /* MainViewDelegate.swift in Sources */,
+				CD44A7942C314A9C00022D7E /* DataModel.swift in Sources */,
+				CD44A79D2C32EE5500022D7E /* AVPlayerModel.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		CD44A7842C2C4A2000022D7E /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CD44A7852C2C4A2000022D7E /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		CD44A7882C2C4A2000022D7E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		CD44A7892C2C4A2000022D7E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CD44A78B2C2C4A2000022D7E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 428EDD42C2E229538BC23490 /* Pods-UIKitAVPlayer.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = P2CKQU8TPP;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = UIKitAVPlayer/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = hypocrite1023.UIKitAVPlayer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CD44A78C2C2C4A2000022D7E /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 43F21CC7EAABDBDCDBE073E2 /* Pods-UIKitAVPlayer.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = P2CKQU8TPP;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = UIKitAVPlayer/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = hypocrite1023.UIKitAVPlayer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CD44A7712C2C4A1E00022D7E /* Build configuration list for PBXProject "UIKitAVPlayer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CD44A7882C2C4A2000022D7E /* Debug */,
+				CD44A7892C2C4A2000022D7E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CD44A78A2C2C4A2000022D7E /* Build configuration list for PBXNativeTarget "UIKitAVPlayer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CD44A78B2C2C4A2000022D7E /* Debug */,
+				CD44A78C2C2C4A2000022D7E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CD44A76E2C2C4A1E00022D7E /* Project object */;
+}
