@@ -19,9 +19,11 @@ class MainView: UIView {
     */
     // UIView to show the video
     var videoViewTemplate: UIView!
+    var fullScreenButton: UIButton!
     // play button
     var playButton: UIButton!
     var circleViewUnderPlayButton: UIView!
+    
     //table view to show your clips
     var clipTableView: UITableView!
     var exportClipTimeButton: UIButton!
@@ -40,6 +42,7 @@ class MainView: UIView {
         setupPlayButton()
         setupClipTableView()
         setupExportClipTimeButton()
+        setupFullScreenPlayerButton()
     }
     
     required init?(coder: NSCoder) {
@@ -67,8 +70,8 @@ class MainView: UIView {
         videoViewTemplate.backgroundColor = .black
         videoViewTemplate.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(videoViewTemplate)
-        print("videoViewTemplate")
-        print(videoViewTemplate.frame, "videoViewTemplate.frame")
+//        print("videoViewTemplate")
+//        print(videoViewTemplate.frame, "videoViewTemplate.frame")
     }
     // MARK: - setup playButton
     func setupPlayButton() -> () {
@@ -89,6 +92,21 @@ class MainView: UIView {
         playButton.tintColor = .gray
         playButton.addTarget(self, action: #selector(activeThePlayer), for: .touchUpInside)
         self.circleViewUnderPlayButton.addSubview(playButton)
+    }
+    // MARK: - setup 放大播放器按鈕
+    func setupFullScreenPlayerButton() {
+        fullScreenButton = UIButton()
+        fullScreenButton.setTitle(nil, for: .normal)
+        fullScreenButton.setImage(UIImage(systemName: "arrow.up.left.and.arrow.down.right"), for: .normal)
+        fullScreenButton.translatesAutoresizingMaskIntoConstraints = false
+        fullScreenButton.tintColor = .gray
+        fullScreenButton.bounds.size = CGSize(width: 30, height: 30)
+        fullScreenButton.addTarget(self, action: #selector(fullScreenPlayer), for: .touchUpInside)
+//        fullScreenButton.layer.borderWidth = 1
+//        fullScreenButton.layer.borderColor = UIColor.gray.cgColor
+//        fullScreenButton.backgroundColor = .white
+        self.addSubview(fullScreenButton)
+//        self.videoViewTemplate.bringSubviewToFront(fullScreenButton)
     }
     // MARK: - setup clipTableView
     func setupClipTableView() -> () {
@@ -124,6 +142,9 @@ class MainView: UIView {
             videoViewTemplate.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
             videoViewTemplate.heightAnchor.constraint(equalToConstant: 250),
             
+            fullScreenButton.topAnchor.constraint(equalTo: self.videoViewTemplate.topAnchor, constant: 20),
+            fullScreenButton.leadingAnchor.constraint(equalTo: self.videoViewTemplate.leadingAnchor, constant: 20),
+            
             playButton.centerXAnchor.constraint(equalTo: self.circleViewUnderPlayButton.centerXAnchor),
             playButton.centerYAnchor.constraint(equalTo: self.circleViewUnderPlayButton.centerYAnchor),
             playButton.widthAnchor.constraint(equalToConstant: 100),
@@ -155,6 +176,9 @@ class MainView: UIView {
             videoViewTemplate.trailingAnchor.constraint(equalTo: self.centerXAnchor),
             videoViewTemplate.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             
+            fullScreenButton.topAnchor.constraint(equalTo: self.videoViewTemplate.topAnchor, constant: 20),
+            fullScreenButton.leadingAnchor.constraint(equalTo: self.videoViewTemplate.leadingAnchor, constant: 20),
+            
             playButton.centerXAnchor.constraint(equalTo: self.circleViewUnderPlayButton.centerXAnchor),
             playButton.centerYAnchor.constraint(equalTo: self.circleViewUnderPlayButton.centerYAnchor),
             playButton.widthAnchor.constraint(equalToConstant: 100),
@@ -177,9 +201,13 @@ class MainView: UIView {
         ]
         NSLayoutConstraint.activate(landscapeConstraints)
     }
-    // MARK: - the function to start the AVPlayer
+    // MARK: - the function to start the VLCMediaPlayer
     @objc func activeThePlayer() -> () {
         mainViewDelegate?.playButtonTap()
+    }
+    // MARK: - the function to full screen the media player
+    @objc func fullScreenPlayer() -> () {
+        mainViewDelegate?.fullScreenPlayer()
     }
 }
 

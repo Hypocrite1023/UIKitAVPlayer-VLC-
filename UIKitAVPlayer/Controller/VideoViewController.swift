@@ -9,7 +9,7 @@ import UIKit
 import AVKit
 import AVFoundation
 import Combine
-//import MobileVLCKit
+import MobileVLCKit
 
 ///啟動播放器需要至少一個參數 AVAsset, delegate?如果需要顯示剪輯時間
 class VideoViewController: UIViewController {
@@ -29,16 +29,25 @@ class VideoViewController: UIViewController {
     var clipRecord: [clipInfo] = []
     var tmpClipRecord: clipInfo?
     
-    var videoPlayerModel: AVPlayerModel!
+//    var videoPlayerModel: AVPlayerModel!
     var playerView: PlayerView!
-//    var mediaPlayer: VLCMediaPlayer!
+    var mediaPlayer: VLCMediaPlayer!
+    var mediaTotalTime: Int?
 //    let assetURL: URL?
     weak var clipTableViewDataSourceDelegate: ClipRecordDelegate?
     
-    init(videoPlayerModel: AVPlayerModel, frame: CGRect) {
-        self.videoPlayerModel = videoPlayerModel
-//        self.mediaPlayer = mediaPlayer
+//    init(videoPlayerModel: AVPlayerModel, frame: CGRect) {
+//        self.videoPlayerModel = videoPlayerModel
+////        self.mediaPlayer = mediaPlayer
+//        playerView = PlayerView(frame: frame)
+//        self.playerView.frame = frame
+//        super.init(nibName: nil, bundle: nil)
+//    }
+    
+    init(mediaPlayer: VLCMediaPlayer, frame: CGRect) {
         playerView = PlayerView(frame: frame)
+        self.mediaPlayer = mediaPlayer
+        mediaPlayer.drawable = playerView.videoRenderView
         self.playerView.frame = frame
         super.init(nibName: nil, bundle: nil)
     }
@@ -58,18 +67,17 @@ class VideoViewController: UIViewController {
 //        print(playerView.bounds)
         self.view.addSubview(playerView)
 //        self.view.bounds = CGRect(x: 0, y: 200, width: 300, height: 200)
-        playerView.player = videoPlayerModel.player
+//        playerView.player = videoPlayerModel.player
         
         // 將影片總時長publish
-        playerItemPublisher = videoPlayerModel.player.currentItem!.publisher(for: \.duration)
-            .compactMap{ duration in
-                duration.isValid ? duration.seconds : nil
-            }
+        playerItemPublisher = mediaPlayer.media?.publisher(for: \.length)
             .sink {
-                [weak self] durationInSeconds in
-                guard !durationInSeconds.isNaN else { return }
+                [weak self] length in
+//                guard let lengthInt = length else { return }
                 //設定影片總時長標籤
-                self?.playerView?.totalTimeLabel.text = String(format: "%02d:%02d:%02d", Int(durationInSeconds) / 3600, (Int(durationInSeconds) % 3600) / 60, Int(durationInSeconds) % 60)
+                let lengthInSecond = length.intValue / 1000
+                self?.mediaTotalTime = Int(lengthInSecond)
+                self?.playerView?.totalTimeLabel.text = String(format: "%02d:%02d:%02d", Int(lengthInSecond) / 3600, (Int(lengthInSecond) % 3600) / 60, Int(lengthInSecond) % 60)
                 //取消訂閱
                 self?.cancelTheDurationPublisher()
             }
@@ -82,7 +90,8 @@ class VideoViewController: UIViewController {
         // MARK: - 設定播放器支持的手勢
         setupGesture()
         // 開始播放
-        videoPlayerModel.play()
+//        videoPlayerModel.play()
+        mediaPlayer.play()
         playerView.playPauseButton.setImage(UIImage(systemName: "pause.fill"), for: .normal)
         //每秒更新player的currentTime
         Timer.publish(every: 1.0, on: .main, in: RunLoop.Mode.common)
@@ -90,8 +99,12 @@ class VideoViewController: UIViewController {
             .sink {
                 [weak self] _ in
                 guard let self = self else { return }
-                self.updateCurrentTime(time: videoPlayerModel.player.currentTime())
-                playerView.totalProgressView.setProgress(Float(videoPlayerModel.player.currentTime().seconds / (videoPlayerModel.player.currentItem?.duration.seconds ?? 0)), animated: true)
+                self.updateCurrentTime(time: mediaPlayer.time.value?.intValue)
+                if let mediaTotalTimeInSec = self.mediaTotalTime {
+                    if mediaTotalTimeInSec != 0 {
+                        playerView.totalProgressView.setProgress(Float(((mediaPlayer.time.value?.intValue ?? 0) / 1000) / mediaTotalTimeInSec), animated: true)
+                    }
+                }
             }
             .store(in: &cancellables)
         
@@ -112,14 +125,16 @@ class VideoViewController: UIViewController {
     }
     // MARK: - normal player function
     
-    func updateCurrentTime(time: CMTime) -> () {
-        let currentTimeInSecond = time.seconds
-//        print(currentTimeInSecond)
-        let hour = Int(currentTimeInSecond / 3600)
-        let minute = (Int(currentTimeInSecond) % 3600) / 60
-        let second = Int(currentTimeInSecond) % 60
-        let timeLabel = String(format: "%02d:%02d:%02d", hour, minute, second)
-        playerView.currentTimeLabel.text = timeLabel
+    func updateCurrentTime(time: Int?) -> () {
+        if let time = time {
+            let currentTimeInSecond = time / 1000
+    //        print(currentTimeInSecond)
+            let hour = Int(currentTimeInSecond / 3600)
+            let minute = (Int(currentTimeInSecond) % 3600) / 60
+            let second = Int(currentTimeInSecond) % 60
+            let timeLabel = String(format: "%02d:%02d:%02d", hour, minute, second)
+            playerView.currentTimeLabel.text = timeLabel
+        }
     }
     
     func cancelTheDurationPublisher() {
@@ -175,26 +190,33 @@ class VideoViewController: UIViewController {
                 let currentPoint = sender.location(in: self.view)
                 let threshold: CGFloat = 10.0 // 設定一個閾值來防止過於頻繁的觸發
                 if currentPoint.x - startPoint > threshold {
-                    let newTime = CMTimeAdd(videoPlayerModel.player.currentTime(), CMTimeMake(value: 1, timescale: 1))
-                    videoPlayerModel.player.seek(to: newTime)
+//                    let newTime = CMTimeAdd(videoPlayerModel.player.currentTime(), CMTimeMake(value: 1, timescale: 1))
+//                    videoPlayerModel.player.seek(to: newTime)
+                    mediaPlayer.jumpForward(1)
                     self.panGestureStartPoint = currentPoint
-                    videoPlayerModel.player.isMuted = true
+//                    videoPlayerModel.player.isMuted = true
+                    mediaPlayer.audio?.isMuted = true
                 } else if startPoint - currentPoint.x > threshold {
-                    let newTime = CMTimeAdd(videoPlayerModel.player.currentTime(), CMTimeMake(value: -1, timescale: 1))
-                    videoPlayerModel.player.seek(to: newTime)
+//                    let newTime = CMTimeAdd(videoPlayerModel.player.currentTime(), CMTimeMake(value: -1, timescale: 1))
+//                    videoPlayerModel.player.seek(to: newTime)
+                    mediaPlayer.jumpBackward(1)
                     self.panGestureStartPoint = currentPoint
-                    videoPlayerModel.player.isMuted = true
+//                    videoPlayerModel.player.isMuted = true
+                    mediaPlayer.audio?.isMuted = true
                 }
             }
         case .ended:
             print("ended", sender.location(in: self.view))
-            videoPlayerModel.player.isMuted = false
+//            videoPlayerModel.player.isMuted = false
+            mediaPlayer.audio?.isMuted = true
             break
         case .cancelled:
-            videoPlayerModel.player.isMuted = false
+//            videoPlayerModel.player.isMuted = false
+            mediaPlayer.audio?.isMuted = true
             break
         case .failed:
-            videoPlayerModel.player.isMuted = false
+//            videoPlayerModel.player.isMuted = false
+            mediaPlayer.audio?.isMuted = true
             break
         @unknown default:
             break
@@ -203,11 +225,16 @@ class VideoViewController: UIViewController {
     
     @objc func seekTimeThroughTimePrcessBar(sender: UITapGestureRecognizer) -> () {
         print(sender.location(in: playerView.totalProgressView), playerView.totalProgressView.bounds.width)
-        if let videoTotalTime = videoPlayerModel.player.currentItem?.duration.seconds {
-            let seekTime = sender.location(in: playerView.totalProgressView).x / playerView.totalProgressView.bounds.width * videoTotalTime
-            videoPlayerModel.player.seek(to: CMTime(seconds: seekTime, preferredTimescale: 1))
+//        if let videoTotalTime = videoPlayerModel.player.currentItem?.duration.seconds {
+//            let seekTime = sender.location(in: playerView.totalProgressView).x / playerView.totalProgressView.bounds.width * videoTotalTime
+//            videoPlayerModel.player.seek(to: CMTime(seconds: seekTime, preferredTimescale: 1))
+//        }
+        let seekTime = sender.location(in: playerView.totalProgressView).x / playerView.totalProgressView.bounds.width * ((mediaPlayer.media?.length.value as! CGFloat) / 1000)
+        if seekTime > (mediaPlayer.time.value as! CGFloat) / 1000 {
+            mediaPlayer.jumpForward(Int32(seekTime))
+        } else {
+            mediaPlayer.jumpBackward(Int32(seekTime))
         }
-        
     }
     
     func updateClipButtonStatus() -> () {
@@ -223,12 +250,12 @@ class VideoViewController: UIViewController {
                 let orientation = windowScene.interfaceOrientation
                 if orientation.isLandscape {
                     
-                    self.playerView.playerLayer.frame = self.view.bounds
-                    self.playerView.playerLayer.videoGravity = .resizeAspect
+                    self.playerView.frame = self.view.bounds
+//                    self.playerView.playerLayer.videoGravity = .resizeAspect
                     print("橫向")
                 } else if orientation.isPortrait {
-                    self.playerView.playerLayer.frame = self.view.bounds
-                    self.playerView.playerLayer.videoGravity = .resizeAspect
+                    self.playerView.frame = self.view.bounds
+//                    self.playerView.playerLayer.videoGravity = .resizeAspect
                     print("縱向")
                 }
             }
@@ -249,25 +276,32 @@ class VideoViewController: UIViewController {
 
 extension VideoViewController: PlayerViewDelegate {
     func playOrPauseVideo(sender: UIButton) {
-        if videoPlayerModel.player.timeControlStatus == .playing {
-            videoPlayerModel.player.pause()
+//        if videoPlayerModel.player.timeControlStatus == .playing {
+//            videoPlayerModel.player.pause()
+//            playerView.playPauseButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
+//        } else if videoPlayerModel.player.timeControlStatus == .paused {
+//            videoPlayerModel.player.play()
+//            playerView.playPauseButton.setImage(UIImage(systemName: "pause.fill"), for: .normal)
+//        }
+        if mediaPlayer.isPlaying {
+            mediaPlayer.pause()
             playerView.playPauseButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
-        } else if videoPlayerModel.player.timeControlStatus == .paused {
-            videoPlayerModel.player.play()
+        } else {
+            mediaPlayer.play()
             playerView.playPauseButton.setImage(UIImage(systemName: "pause.fill"), for: .normal)
         }
     }
     
     func fastForwardVideo(sender: UIButton?) {
-        let newTime = CMTimeAdd(videoPlayerModel.player.currentTime(), CMTimeMake(value: 10, timescale: 1))
-        
-        videoPlayerModel.player.seek(to: newTime)
+//        let newTime = CMTimeAdd(videoPlayerModel.player.currentTime(), CMTimeMake(value: 10, timescale: 1))
+//        videoPlayerModel.player.seek(to: newTime)
+        mediaPlayer.jumpForward(10)
     }
     
     func fastBackwardVideo(sender: UIButton?) {
-        let newTime = CMTimeAdd(videoPlayerModel.player.currentTime(), CMTimeMake(value: -10, timescale: 1))
-        
-        videoPlayerModel.player.seek(to: newTime)
+//        let newTime = CMTimeAdd(videoPlayerModel.player.currentTime(), CMTimeMake(value: -10, timescale: 1))
+//        videoPlayerModel.player.seek(to: newTime)
+        mediaPlayer.jumpBackward(10)
     }
     
     func closePlayer(sender: UIButton) {
@@ -276,7 +310,8 @@ extension VideoViewController: PlayerViewDelegate {
 //        }
         
         // 停止播放器
-        videoPlayerModel.player.pause()
+//        videoPlayerModel.player.pause()
+        mediaPlayer.pause()
         
         // 取消所有的訂閱
         self.cancellables.forEach { $0.cancel() }
@@ -291,7 +326,20 @@ extension VideoViewController: PlayerViewDelegate {
     func setClipEndPoint(sender: UIButton) -> () {
         print("clip end")
         clipComplete.toggle()
-        if let currentTimeInSecond = videoPlayerModel.player.currentItem?.currentTime().seconds {
+//        if let currentTimeInSecond = videoPlayerModel.player.currentItem?.currentTime().seconds {
+//            let hour = Int(currentTimeInSecond / 3600)
+//            let minute = (Int(currentTimeInSecond) % 3600) / 60
+//            let second = Int(currentTimeInSecond) % 60
+//            let timeLabel = String(format: "%02d:%02d:%02d", hour, minute, second)
+//            tmpClipRecord?.endTime = timeLabel
+//            if let tmpClipRecord = tmpClipRecord {
+//                clipRecord.append(tmpClipRecord)
+//            }
+//            self.tmpClipRecord = nil
+//            print(clipRecord.description)
+//        }
+        if let currentTime = mediaPlayer.time.value?.intValue {
+            let currentTimeInSecond = currentTime / 1000
             let hour = Int(currentTimeInSecond / 3600)
             let minute = (Int(currentTimeInSecond) % 3600) / 60
             let second = Int(currentTimeInSecond) % 60
@@ -319,14 +367,26 @@ extension VideoViewController: PlayerViewDelegate {
     func setClipStartPoint(sender: UIButton) -> () {
         print("clip start")
         clipComplete.toggle()
-        if let currentTimeInSecond = videoPlayerModel.player.currentItem?.currentTime().seconds {
+//        if let currentTimeInSecond = videoPlayerModel.player.currentItem?.currentTime().seconds {
+//            let hour = Int(currentTimeInSecond / 3600)
+//            let minute = (Int(currentTimeInSecond) % 3600) / 60
+//            let second = Int(currentTimeInSecond) % 60
+//            let timeLabel = String(format: "%02d:%02d:%02d", hour, minute, second)
+//            tmpClipRecord = clipInfo(startTime: timeLabel, endTime: nil)
+//        }
+        if let currentTime = mediaPlayer.time.value?.intValue {
+            let currentTimeInSecond = currentTime / 1000
             let hour = Int(currentTimeInSecond / 3600)
             let minute = (Int(currentTimeInSecond) % 3600) / 60
             let second = Int(currentTimeInSecond) % 60
             let timeLabel = String(format: "%02d:%02d:%02d", hour, minute, second)
-            tmpClipRecord = clipInfo(startTime: timeLabel, endTime: nil)
+            tmpClipRecord?.endTime = timeLabel
+            if let tmpClipRecord = tmpClipRecord {
+                clipRecord.append(tmpClipRecord)
+            }
+            self.tmpClipRecord = nil
+            print(clipRecord.description)
         }
-        
         UIView.animateKeyframes(withDuration: 0.5, delay: 0, animations: {
             let originalSize = self.playerView.clipStartButton.bounds.size
             UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.25) {

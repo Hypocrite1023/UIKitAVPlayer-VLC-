@@ -6,19 +6,20 @@
 //
 
 import UIKit
-//import MobileVLCKit
+import MobileVLCKit
 
 class InputUrlTextFieldViewViewController: UIViewController {
     
     var inputUrlTextFieldView: InputUrlTextFieldView!
-    var avPlayer: AVPlayerModel?
-//    var vlcMediaPlayer = VLCMediaPlayer()
+//    var avPlayer: AVPlayerModel?
+    var vlcMediaPlayer = VLCMediaPlayer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         inputUrlTextFieldView = InputUrlTextFieldView(frame: UIScreen.main.bounds)
+        inputUrlTextFieldView.urlInputField.text = "https://file-examples.com/storage/fed61f387f6686cd19d49b1/2017/04/file_example_MP4_1920_18MG.mp4"
         inputUrlTextFieldView.submitButtonDelegate = self
         self.view.addSubview(inputUrlTextFieldView)
         inputUrlTextFieldView.setupPortraitConstraints()
@@ -49,16 +50,17 @@ class InputUrlTextFieldViewViewController: UIViewController {
 extension InputUrlTextFieldViewViewController: InputUrlTextFieldButtonTapDelegate {
     func urlSubmitButtonTap(sender: UIButton) {
         if let inputURL = inputUrlTextFieldView.urlInputField.text {
+            inputUrlTextFieldView.urlInputField.resignFirstResponder()
             print(inputURL.description)
             if let url = URL(string: inputURL) {
                 if UIApplication.shared.canOpenURL(url) {
-                    avPlayer = AVPlayerModel(url: url)
-//                    vlcMediaPlayer = VLCMediaPlayer()
+//                    avPlayer = AVPlayerModel(url: url)
+                    vlcMediaPlayer = VLCMediaPlayer()
 //                    vlcMediaPlayer.drawable = inputUrlTextFieldView.playerView
-//                    vlcMediaPlayer.media = VLCMedia(url: url)
+                    vlcMediaPlayer.media = VLCMedia(url: url)
 //                    vlcMediaPlayer.play()
                     self.inputUrlTextFieldView.urlInputField.text?.removeAll()
-                    navigationController?.pushViewController(MainViewViewController(avPlayerModel: avPlayer), animated: true)
+                    navigationController?.pushViewController(MainViewViewController(mediaPlayer: vlcMediaPlayer), animated: true)
                 } else {
                     print("wrong url")
                 }

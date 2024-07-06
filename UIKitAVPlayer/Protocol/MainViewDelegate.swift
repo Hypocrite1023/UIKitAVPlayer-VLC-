@@ -8,4 +8,5 @@
 import Foundation
 protocol MainViewDelegate: AnyObject {
     func playButtonTap()
+    func fullScreenPlayer()
 }

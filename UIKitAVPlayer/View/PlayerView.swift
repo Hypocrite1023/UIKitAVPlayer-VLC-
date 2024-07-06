@@ -25,7 +25,8 @@ class PlayerView: UIView {
 //    var playerLayer: AVPlayerLayer?
     //MARK: - player UI item
 //    var playerView: UIView! //播放器
-    var mergeView = UIView()
+    var videoRenderView = UIView()
+    var mergeView = UIView() //全部控制介面
     var bottomControlBar: UIView! //播放器控制bar
     var playPauseButton: UIButton! //播放暫停鍵
     var fastForwardButton: UIButton! //快轉前進
@@ -44,22 +45,24 @@ class PlayerView: UIView {
     
     var playerLayer: AVPlayerLayer!
     
-    var player: AVPlayer? {
-        get {
-            return playerLayer.player
-        }
-        set {
-            playerLayer = AVPlayerLayer(player: newValue)
-            playerLayer?.frame = self.bounds
-            playerLayer?.videoGravity = .resizeAspect
-            playerLayer?.backgroundColor = UIColor.black.cgColor
-            self.layer.insertSublayer(playerLayer, below: mergeView.layer)
-        }
-    }
+//    var player: AVPlayer? {
+//        get {
+//            return playerLayer.player
+//        }
+//        set {
+//            playerLayer = AVPlayerLayer(player: newValue)
+//            playerLayer?.frame = self.bounds
+//            playerLayer?.videoGravity = .resizeAspect
+//            playerLayer?.backgroundColor = UIColor.black.cgColor
+//            self.layer.insertSublayer(playerLayer, below: mergeView.layer)
+//        }
+//    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.frame = frame
+        videoRenderView.frame = frame
+        self.addSubview(videoRenderView)
         mergeView.frame = frame
 //        print(mergeView.frame)
         self.addSubview(mergeView)
