@@ -15,7 +15,7 @@ class MainViewViewController: UIViewController {
     // an array to store your clip info
     var clipArray: [clipInfo] = []
 //    var avPlayerModel: AVPlayerModel!
-    var mediaPlayer: VLCMediaPlayer!
+    var vlcMedia: VLCMedia?
     var mainView: MainView!
     
 //    init(avPlayerModel: AVPlayerModel!) {
@@ -23,9 +23,12 @@ class MainViewViewController: UIViewController {
 //        self.avPlayerModel = avPlayerModel
 //        super.init(nibName: nil, bundle: nil)
 //    }
-    init(mediaPlayer: VLCMediaPlayer!) {
-        self.mediaPlayer = mediaPlayer
+    init(vlcMedia: VLCMedia) {
+        self.vlcMedia = vlcMedia
         super.init(nibName: nil, bundle: nil)
+    }
+    deinit {
+        print("MainViewViewController deinit")
     }
     
     required init?(coder: NSCoder) {
@@ -44,9 +47,31 @@ class MainViewViewController: UIViewController {
         
 //        avPlayerModel = AVPlayerModel(url: URL(string: "http://192.168.0.104:84/2023-07-05-1/2023-07-05-1-15.mp4")!)
         mainView?.clipTableView.dataSource = self
-        mainView?.clipTableView.delegate = self
+//        mainView?.clipTableView.delegate = self
         setupInitialConstraint()
+//        NotificationCenter.default.addObserver(self, selector: #selector(mediaPlayerStateChanged), name: .VLCMediaPlayerStateChanged, object: mediaPlayer)
+
+        
     }
+//    @objc func mediaPlayerStateChanged(notification: NSNotification) {
+//        guard let mediaPlayer = notification.object as? VLCMediaPlayer else { return }
+//        switch mediaPlayer.state {
+//        case .buffering:
+//            print("Buffering...")
+//        case .playing:
+//            print("Playing...")
+//        case .stopped:
+//            print("Stopped")
+//        case .paused:
+//            print("Paused")
+//        case .ended:
+//            print("Ended")
+//        case .error:
+//            print("Error")
+//        default:
+//            break
+//        }
+//    }
     // MARK: - the function will execute when the view transition: 橫向、縱向
     override func viewWillTransition(to size: CGSize, with coordinator: any UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
@@ -91,26 +116,26 @@ extension MainViewViewController: UITableViewDataSource {
     
 }
 // MARK: - extension MainViewViewController: UITableViewDelegate
-extension MainViewViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let videoViewController = VideoViewController(videoPlayerModel: avPlayerModel, frame: UIScreen.main.bounds)
-        let videoViewController = VideoViewController(mediaPlayer: mediaPlayer, frame: UIScreen.main.bounds)
-//        let videoURL = URL(string: "http://192.168.0.104:84/2023-07-05-1/2023-07-05-1-15.mp4")!
-//        videoViewController.asset = AVAsset(url: videoURL)
-        let timeStr = clipArray[indexPath.row].startTime?.split(separator: ":")
-        if let timeStr = timeStr {
-            let (hour, minute, second) = (Int(timeStr[0]), Int(timeStr[1]), Int(timeStr[2]))
-            var seconds = hour ?? 0 * 3600
-            seconds += minute ?? 0 * 60
-            seconds += second ?? 0
-//            avPlayerModel.player.seek(to: CMTime(seconds: Double(seconds), preferredTimescale: 1))
-            mediaPlayer.jumpForward(Int32(seconds))
-        }
-        videoViewController.modalPresentationStyle = .fullScreen
-        present(videoViewController, animated: true)
-        mainView?.clipTableView.deselectRow(at: indexPath, animated: true)
-    }
-}
+//extension MainViewViewController: UITableViewDelegate {
+//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+////        let videoViewController = VideoViewController(videoPlayerModel: avPlayerModel, frame: UIScreen.main.bounds)
+//        let videoViewController = PlayerViewController(mediaPlayer: mediaPlayer, frame: UIScreen.main.bounds)
+////        let videoURL = URL(string: "http://192.168.0.104:84/2023-07-05-1/2023-07-05-1-15.mp4")!
+////        videoViewController.asset = AVAsset(url: videoURL)
+//        let timeStr = clipArray[indexPath.row].startTime?.split(separator: ":")
+//        if let timeStr = timeStr {
+//            let (hour, minute, second) = (Int(timeStr[0]), Int(timeStr[1]), Int(timeStr[2]))
+//            var seconds = hour ?? 0 * 3600
+//            seconds += minute ?? 0 * 60
+//            seconds += second ?? 0
+////            avPlayerModel.player.seek(to: CMTime(seconds: Double(seconds), preferredTimescale: 1))
+//            mediaPlayer.jumpForward(Int32(seconds))
+//        }
+//        videoViewController.modalPresentationStyle = .fullScreen
+//        present(videoViewController, animated: true)
+//        mainView?.clipTableView.deselectRow(at: indexPath, animated: true)
+//    }
+//}
 // MARK: - extension MainViewViewController: ClipRecordDelegate
 extension MainViewViewController: ClipRecordDelegate {
     func receiveClipRecord(clipRecord: [clipInfo]) {
@@ -123,27 +148,38 @@ extension MainViewViewController: ClipRecordDelegate {
 extension MainViewViewController: MainViewDelegate {
     func fullScreenPlayer() {
         print("full screen")
-        let videoViewController = VideoViewController(mediaPlayer: mediaPlayer, frame: UIScreen.main.bounds)
-        videoViewController.modalPresentationStyle = .fullScreen
-        videoViewController.clipTableViewDataSourceDelegate = self
-        print(videoViewController.view.frame, "xxx")
-        
-        present(videoViewController, animated: true)
+//        let videoViewController = VideoViewController(mediaPlayer: mediaPlayer, frame: UIScreen.main.bounds)
+//        videoViewController.modalPresentationStyle = .fullScreen
+//        mediaPlayer.drawable = videoViewController.playerView.videoRenderView
+//        mediaPlayer.pause()
+//        mediaPlayer.play()
+//        mediaPlayer = VLCMediaPlayer()
+//        mediaPlayer.media = self.vlcMedia
+//        mediaPlayer.pause()
+//        mediaPlayer.drawable = nil
+//        mediaPlayer.drawable = self.mainView.videoViewTemplate2
+//        print((mediaPlayer.drawable as? UIView)?.frame)
+//        mediaPlayer.play()
+//        mediaPlayer.play()
+//        videoViewController.clipTableViewDataSourceDelegate = self
+//        print(videoViewController.view.frame, "xxx")
+//        navigationController?.pushViewController(videoViewController, animated: true)
+//        present(videoViewController, animated: true)
     }
     
     func playButtonTap() {
         print("tap")
-        mediaPlayer.drawable = self.mainView.videoViewTemplate
-        mediaPlayer.play()
-        self.mainView.playButton.isHidden = true
-        self.mainView.circleViewUnderPlayButton.isHidden = true
-//        let videoViewController = VideoViewController(mediaPlayer: mediaPlayer, frame: UIScreen.main.bounds)
-//        videoViewController.modalPresentationStyle = .fullScreen
-//        videoViewController.clipTableViewDataSourceDelegate = self
+//        mediaPlayer.play()
+//        self.mainView.playButton.isHidden = true
+//        self.mainView.circleViewUnderPlayButton.isHidden = true
+        let videoViewController = PlayerViewController(vlcMedia: vlcMedia!, frame: UIScreen.main.bounds)
+        videoViewController.modalPresentationStyle = .fullScreen
+        videoViewController.clipTableViewDataSourceDelegate = self
 //        print(videoViewController.view.frame, "xxx")
         
-//        present(videoViewController, animated: true)
+        present(videoViewController, animated: true)
     }
     
     
 }
+

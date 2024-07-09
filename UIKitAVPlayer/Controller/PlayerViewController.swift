@@ -18,36 +18,29 @@ class PlayerViewController: UIViewController {
     var longTapHoldGesture: UIPanGestureRecognizer? //長按並拖動手指快轉
     var doubleTapGesture: UITapGestureRecognizer? //點兩下快轉
     var timeProcessBarGesture: UITapGestureRecognizer? //點進度條迅速調整播放時間段
+    var singleTapToShowOrHideControlItemGesture: UITapGestureRecognizer? //單點控制顯示或隱藏控制介面
     
     var cancellables: Set<AnyCancellable> = []
     var playerItemPublisher: AnyCancellable?
     
     var panGestureStartPoint: CGPoint?
+    // MARK: - clip 相關功能及變數宣告
     var clipComplete = true
-    
-    
     var clipRecord: [clipInfo] = []
     var tmpClipRecord: clipInfo?
     
-//    var videoPlayerModel: AVPlayerModel!
     var playerView: PlayerView!
     var mediaPlayer: VLCMediaPlayer!
+    var vlcMedia: VLCMedia?
     var mediaTotalTime: Int?
-//    let assetURL: URL?
+    var isPlayerControlVisible = true
+    var idleTimer: Timer?
+    
     weak var clipTableViewDataSourceDelegate: ClipRecordDelegate?
     
-//    init(videoPlayerModel: AVPlayerModel, frame: CGRect) {
-//        self.videoPlayerModel = videoPlayerModel
-////        self.mediaPlayer = mediaPlayer
-//        playerView = PlayerView(frame: frame)
-//        self.playerView.frame = frame
-//        super.init(nibName: nil, bundle: nil)
-//    }
-    
-    init(mediaPlayer: VLCMediaPlayer, frame: CGRect) {
+    init(vlcMedia: VLCMedia , frame: CGRect) {
         playerView = PlayerView(frame: frame)
-        self.mediaPlayer = mediaPlayer
-//        mediaPlayer.drawable = playerView.videoRenderView
+        self.vlcMedia = vlcMedia
         self.playerView.frame = frame
         super.init(nibName: nil, bundle: nil)
     }
@@ -63,14 +56,11 @@ class PlayerViewController: UIViewController {
         // MARK: - 建構介面
         
         playerView.playerViewDelegate = self
-//        playerView.frame = CGRect(x: 0, y: 200, width: 300, height: 200)
-//        print(playerView.bounds)
         self.view.addSubview(playerView)
+        mediaPlayer = VLCMediaPlayer()
+        mediaPlayer.media = self.vlcMedia
         mediaPlayer.drawable = playerView.videoRenderView
         mediaPlayer.play()
-//        self.view.bounds = CGRect(x: 0, y: 200, width: 300, height: 200)
-//        playerView.player = videoPlayerModel.player
-        
         // 將影片總時長publish
         playerItemPublisher = mediaPlayer.media?.publisher(for: \.length)
             .sink {
@@ -85,31 +75,43 @@ class PlayerViewController: UIViewController {
             }
         playerItemPublisher?.store(in: &cancellables)
         
-        
-        
-        
-        
         // MARK: - 設定播放器支持的手勢
         setupGesture()
+        // MARK: ------------------
         // 開始播放
-//        videoPlayerModel.play()
         mediaPlayer.play()
         playerView.playPauseButton.setImage(UIImage(systemName: "pause.fill"), for: .normal)
         //每秒更新player的currentTime
-        Timer.publish(every: 1.0, on: .main, in: RunLoop.Mode.common)
-            .autoconnect()
-            .sink {
-                [weak self] _ in
-                guard let self = self else { return }
-                self.updateCurrentTime(time: mediaPlayer.time.value?.intValue)
-                if let mediaTotalTimeInSec = self.mediaTotalTime {
-                    if mediaTotalTimeInSec != 0 {
-                        playerView.totalProgressView.setProgress(Float(((mediaPlayer.time.value?.intValue ?? 0) / 1000) / mediaTotalTimeInSec), animated: true)
-                    }
-                }
-            }
-            .store(in: &cancellables)
+//        Timer.publish(every: 1.0, on: .main, in: RunLoop.Mode.common)
+//            .autoconnect()
+//            .sink {
+//                [weak self] _ in
+//                guard let self = self else { return }
+//                self.updateCurrentTime(time: mediaPlayer.time.value?.intValue)
+//                if let mediaTotalTimeInSec = self.mediaTotalTime {
+//                    if mediaTotalTimeInSec != 0 {
+//                        playerView.totalProgressView.setProgress(Float(((mediaPlayer.time.value?.intValue ?? 0) / 1000) / mediaTotalTimeInSec), animated: true)
+//                    }
+//                }
+//            }
+//            .store(in: &cancellables)
         NotificationCenter.default.addObserver(self, selector: #selector(mediaPlayerStateChanged), name: .VLCMediaPlayerStateChanged, object: mediaPlayer)
+        NotificationCenter.default.addObserver(self, selector: #selector(mediaPlayerCurrentTimeChanged), name: .VLCMediaPlayerTimeChanged, object: mediaPlayer)
+        setupIdleTimer()
+        
+    }
+    
+    @objc func mediaPlayerCurrentTimeChanged(notification: NSNotification) {
+        print("current time change")
+
+        guard let mediaPlayer = notification.object as? VLCMediaPlayer else { return }
+        self.updateCurrentTime(time: mediaPlayer.time.value?.intValue)
+//        print(self.mediaTotalTime, Float(Float((mediaPlayer.time.value?.intValue ?? 0) / 1000) / 596))
+        if let mediaTotalTimeInSec = self.mediaTotalTime {
+            if mediaTotalTimeInSec != 0 {
+                playerView.totalProgressView.setProgress(Float(Float((mediaPlayer.time.value?.intValue ?? 0) / 1000) / Float(mediaTotalTimeInSec)), animated: true)
+            }
+        }
     }
     @objc func mediaPlayerStateChanged(notification: NSNotification) {
         guard let mediaPlayer = notification.object as? VLCMediaPlayer else { return }
@@ -130,23 +132,19 @@ class PlayerViewController: UIViewController {
             break
         }
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        print("viewDidAppear")
-        mediaPlayer.drawable = playerView.videoRenderView
-        // 檢查 mediaPlayer 狀態
-        print("mediaPlayer state before play: \(mediaPlayer.state)")
-
-        mediaPlayer.pause()
-        mediaPlayer.play()
-
-        // 再次檢查 mediaPlayer 狀態
-        print("mediaPlayer state after play: \(mediaPlayer.state)")
-        // 調試輸出
-        print("videoRenderView frame: \(playerView.videoRenderView.frame)")
-        print("videoRenderView bounds: \(playerView.videoRenderView.bounds)")
+    //MARK: - setup idleTimer
+    func setupIdleTimer() {
+        isPlayerControlVisible = true
+        idleTimer?.invalidate()
+        idleTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(hidePlayerControlIfNeed), userInfo: nil, repeats: false)
     }
+    @objc func hidePlayerControlIfNeed() {
+        if isPlayerControlVisible {
+            hidePlayerControl()
+            isPlayerControlVisible.toggle() // true -> false
+        }
+    }
+    //MARK: - 設定手勢property
     fileprivate func setupGesture() {
         longTapHoldGesture = UIPanGestureRecognizer(target: self, action: #selector(longTapHoldSwipeGesture))
         longTapHoldGesture?.minimumNumberOfTouches = 1
@@ -160,6 +158,12 @@ class PlayerViewController: UIViewController {
         timeProcessBarGesture = UITapGestureRecognizer(target: self, action: #selector(seekTimeThroughTimePrcessBar))
         timeProcessBarGesture?.numberOfTapsRequired = 1
         playerView.totalProgressView.addGestureRecognizer(timeProcessBarGesture!)
+        
+        singleTapToShowOrHideControlItemGesture = UITapGestureRecognizer(target: self, action: #selector(singleTapToShowOrHideControlItem))
+        singleTapToShowOrHideControlItemGesture?.numberOfTapsRequired = 1
+        playerView.mergeView.addGestureRecognizer(singleTapToShowOrHideControlItemGesture!)
+        
+        singleTapToShowOrHideControlItemGesture?.require(toFail: doubleTapGesture!)
     }
     // MARK: - normal player function
     
@@ -180,6 +184,8 @@ class PlayerViewController: UIViewController {
     }
     // MARK: - Gesture functions
     @objc func doubleTap(sender: UIGestureRecognizer) {
+        showPlayerControl()
+        setupIdleTimer()
         if sender.state == .ended {
             let location = sender.location(in: self.view)
             print(location.x, location.y)
@@ -246,15 +252,15 @@ class PlayerViewController: UIViewController {
         case .ended:
             print("ended", sender.location(in: self.view))
 //            videoPlayerModel.player.isMuted = false
-            mediaPlayer.audio?.isMuted = true
+            mediaPlayer.audio?.isMuted = false
             break
         case .cancelled:
 //            videoPlayerModel.player.isMuted = false
-            mediaPlayer.audio?.isMuted = true
+            mediaPlayer.audio?.isMuted = false
             break
         case .failed:
 //            videoPlayerModel.player.isMuted = false
-            mediaPlayer.audio?.isMuted = true
+            mediaPlayer.audio?.isMuted = false
             break
         @unknown default:
             break
@@ -262,16 +268,37 @@ class PlayerViewController: UIViewController {
     }
     
     @objc func seekTimeThroughTimePrcessBar(sender: UITapGestureRecognizer) -> () {
+        showPlayerControl()
+        setupIdleTimer()
         print(sender.location(in: playerView.totalProgressView), playerView.totalProgressView.bounds.width)
-//        if let videoTotalTime = videoPlayerModel.player.currentItem?.duration.seconds {
-//            let seekTime = sender.location(in: playerView.totalProgressView).x / playerView.totalProgressView.bounds.width * videoTotalTime
-//            videoPlayerModel.player.seek(to: CMTime(seconds: seekTime, preferredTimescale: 1))
-//        }
         let seekTime = sender.location(in: playerView.totalProgressView).x / playerView.totalProgressView.bounds.width * ((mediaPlayer.media?.length.value as! CGFloat) / 1000)
         if seekTime > (mediaPlayer.time.value as! CGFloat) / 1000 {
             mediaPlayer.jumpForward(Int32(seekTime))
         } else {
             mediaPlayer.jumpBackward(Int32(seekTime))
+        }
+    }
+    
+    @objc func singleTapToShowOrHideControlItem(sender: UITapGestureRecognizer) -> () {
+        if isPlayerControlVisible {
+            hidePlayerControl()
+        } else {
+            showPlayerControl()
+            setupIdleTimer()
+        }
+    }
+    
+    func hidePlayerControl() {
+        isPlayerControlVisible = false
+        for view in self.playerView.mergeView.subviews {
+            view.isHidden = true
+        }
+    }
+    
+    func showPlayerControl() {
+        isPlayerControlVisible = true
+        for view in self.playerView.mergeView.subviews {
+            view.isHidden = false
         }
     }
     
@@ -308,9 +335,10 @@ class PlayerViewController: UIViewController {
         clipTableViewDataSourceDelegate = nil
         print("view disappear, delegate release")
     }
-    
+    //MARK: - deinit
     deinit {
         print("deinit VideoViewController")
+        NotificationCenter.default.removeObserver(self, name: .VLCMediaPlayerStateChanged, object: nil)
     }
 }
 
@@ -318,13 +346,6 @@ class PlayerViewController: UIViewController {
 
 extension PlayerViewController: PlayerViewDelegate {
     func playOrPauseVideo(sender: UIButton) {
-//        if videoPlayerModel.player.timeControlStatus == .playing {
-//            videoPlayerModel.player.pause()
-//            playerView.playPauseButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
-//        } else if videoPlayerModel.player.timeControlStatus == .paused {
-//            videoPlayerModel.player.play()
-//            playerView.playPauseButton.setImage(UIImage(systemName: "pause.fill"), for: .normal)
-//        }
         if mediaPlayer.isPlaying {
             mediaPlayer.pause()
             playerView.playPauseButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
@@ -368,18 +389,6 @@ extension PlayerViewController: PlayerViewDelegate {
     func setClipEndPoint(sender: UIButton) -> () {
         print("clip end")
         clipComplete.toggle()
-//        if let currentTimeInSecond = videoPlayerModel.player.currentItem?.currentTime().seconds {
-//            let hour = Int(currentTimeInSecond / 3600)
-//            let minute = (Int(currentTimeInSecond) % 3600) / 60
-//            let second = Int(currentTimeInSecond) % 60
-//            let timeLabel = String(format: "%02d:%02d:%02d", hour, minute, second)
-//            tmpClipRecord?.endTime = timeLabel
-//            if let tmpClipRecord = tmpClipRecord {
-//                clipRecord.append(tmpClipRecord)
-//            }
-//            self.tmpClipRecord = nil
-//            print(clipRecord.description)
-//        }
         if let currentTime = mediaPlayer.time.value?.intValue {
             let currentTimeInSecond = currentTime / 1000
             let hour = Int(currentTimeInSecond / 3600)
@@ -409,13 +418,6 @@ extension PlayerViewController: PlayerViewDelegate {
     func setClipStartPoint(sender: UIButton) -> () {
         print("clip start")
         clipComplete.toggle()
-//        if let currentTimeInSecond = videoPlayerModel.player.currentItem?.currentTime().seconds {
-//            let hour = Int(currentTimeInSecond / 3600)
-//            let minute = (Int(currentTimeInSecond) % 3600) / 60
-//            let second = Int(currentTimeInSecond) % 60
-//            let timeLabel = String(format: "%02d:%02d:%02d", hour, minute, second)
-//            tmpClipRecord = clipInfo(startTime: timeLabel, endTime: nil)
-//        }
         if let currentTime = mediaPlayer.time.value?.intValue {
             let currentTimeInSecond = currentTime / 1000
             let hour = Int(currentTimeInSecond / 3600)

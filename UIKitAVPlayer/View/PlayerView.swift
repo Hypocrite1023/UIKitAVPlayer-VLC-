@@ -25,7 +25,7 @@ class PlayerView: UIView {
 //    var playerLayer: AVPlayerLayer?
     //MARK: - player UI item
 //    var playerView: UIView! //播放器
-    var videoRenderView = UIView()
+    var videoRenderView = UIView() // 影像畫面
     var mergeView = UIView() //全部控制介面
     var bottomControlBar: UIView! //播放器控制bar
     var playPauseButton: UIButton! //播放暫停鍵
@@ -43,32 +43,34 @@ class PlayerView: UIView {
     
     weak var playerViewDelegate: PlayerViewDelegate?
     
-    var playerLayer: AVPlayerLayer!
-    
-//    var player: AVPlayer? {
-//        get {
-//            return playerLayer.player
-//        }
-//        set {
-//            playerLayer = AVPlayerLayer(player: newValue)
-//            playerLayer?.frame = self.bounds
-//            playerLayer?.videoGravity = .resizeAspect
-//            playerLayer?.backgroundColor = UIColor.black.cgColor
-//            self.layer.insertSublayer(playerLayer, below: mergeView.layer)
-//        }
-//    }
+//    var playerLayer: AVPlayerLayer!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.frame = frame
-        videoRenderView.frame = frame
+//        videoRenderView.frame = frame
+        videoRenderView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(videoRenderView)
         mergeView.frame = frame
-//        print(mergeView.frame)
         self.addSubview(mergeView)
-//        self.playerViewDelegate = playerViewDelegate
         
-//        setupPlayerLayer()
+//        self.playerViewDelegate = playerViewDelegate
+        //MARK: - 設定自訂播放器控制介面
+        setCustomPlayerController()
+        //MARK: - 額外播放器界面 clip function
+        setupClipEndButton()
+        setupClipStartButton()
+        
+        // MARK: - 設定constraints
+        setupConstraints()
+        setupAdditionalFunctionConstraints()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setCustomPlayerController() {
         setupBottomControllBar()
         setupPlayPauseButton()
         setupFastForwardButton()
@@ -79,17 +81,6 @@ class PlayerView: UIView {
         setupFastForwardAnimateImageView()
         setupFastBackwardAnimateImageView()
         setupClosePlayerButton()
-        //MARK: - 額外播放器界面 clip function
-        setupClipEndButton()
-        setupClipStartButton()
-        
-        // MARK: - 設定constraints
-        setupConstraints()
-//        print(bottomControlBar.frame)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     fileprivate func setupPlayPauseButton() {
@@ -172,15 +163,15 @@ class PlayerView: UIView {
         fastBackwardAnimateImageView.translatesAutoresizingMaskIntoConstraints = false
         fastBackwardAnimateImageView.bounds.size = CGSize(width: 50, height: 50)
         fastBackwardAnimateImageView.tintColor = .white.withAlphaComponent(0.5)
-        mergeView.addSubview(fastBackwardAnimateImageView)
+        addSubview(fastBackwardAnimateImageView)
     }
     
-    fileprivate func setupConstraints() {
+    func setupConstraints() {
         NSLayoutConstraint.activate([
             bottomControlBar.heightAnchor.constraint(equalToConstant: 30),
-            bottomControlBar.leadingAnchor.constraint(equalTo: mergeView.leadingAnchor),
-            bottomControlBar.trailingAnchor.constraint(equalTo: mergeView.trailingAnchor),
-            bottomControlBar.bottomAnchor.constraint(equalTo: mergeView.safeAreaLayoutGuide.bottomAnchor),
+            bottomControlBar.leadingAnchor.constraint(equalTo: videoRenderView.leadingAnchor),
+            bottomControlBar.trailingAnchor.constraint(equalTo: videoRenderView.trailingAnchor),
+            bottomControlBar.bottomAnchor.constraint(equalTo: videoRenderView.safeAreaLayoutGuide.bottomAnchor),
             
             fastBackwardButton.topAnchor.constraint(equalTo: bottomControlBar.safeAreaLayoutGuide.topAnchor),
             fastBackwardButton.bottomAnchor.constraint(equalTo: bottomControlBar.safeAreaLayoutGuide.bottomAnchor),
@@ -218,20 +209,29 @@ class PlayerView: UIView {
             fastBackwardAnimateImageView.centerYAnchor.constraint(equalTo: mergeView.centerYAnchor),
             fastBackwardAnimateImageView.centerXAnchor.constraint(equalTo: mergeView.centerXAnchor, constant: -mergeView.bounds.width / 4),
             
-            clipEndButton.bottomAnchor.constraint(lessThanOrEqualTo: bottomControlBar.topAnchor, constant: -20),
-            clipEndButton.trailingAnchor.constraint(equalTo: mergeView.safeAreaLayoutGuide.trailingAnchor),
-            clipEndButton.heightAnchor.constraint(equalToConstant: 40),
-            clipEndButton.widthAnchor.constraint(equalToConstant: 100),
+            closePlayerButton.leadingAnchor.constraint(equalTo: mergeView.safeAreaLayoutGuide.leadingAnchor),
+            closePlayerButton.topAnchor.constraint(equalTo: mergeView.safeAreaLayoutGuide.topAnchor, constant: 10),
+            closePlayerButton.heightAnchor.constraint(equalToConstant: 30),
+            closePlayerButton.widthAnchor.constraint(equalToConstant: 30),
             
+            videoRenderView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
+            videoRenderView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
+            videoRenderView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
+            videoRenderView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
+    
+    func setupAdditionalFunctionConstraints() {
+        NSLayoutConstraint.activate([
             clipStartButton.bottomAnchor.constraint(lessThanOrEqualTo: bottomControlBar.topAnchor, constant: -20),
             clipStartButton.trailingAnchor.constraint(equalTo: mergeView.safeAreaLayoutGuide.trailingAnchor),
             clipStartButton.heightAnchor.constraint(equalToConstant: 40),
             clipStartButton.widthAnchor.constraint(equalToConstant: 100),
             
-            closePlayerButton.leadingAnchor.constraint(equalTo: mergeView.safeAreaLayoutGuide.leadingAnchor),
-            closePlayerButton.topAnchor.constraint(equalTo: mergeView.safeAreaLayoutGuide.topAnchor, constant: 10),
-            closePlayerButton.heightAnchor.constraint(equalToConstant: 30),
-            closePlayerButton.widthAnchor.constraint(equalToConstant: 30)
+            clipEndButton.bottomAnchor.constraint(lessThanOrEqualTo: bottomControlBar.topAnchor, constant: -20),
+            clipEndButton.trailingAnchor.constraint(equalTo: mergeView.safeAreaLayoutGuide.trailingAnchor),
+            clipEndButton.heightAnchor.constraint(equalToConstant: 40),
+            clipEndButton.widthAnchor.constraint(equalToConstant: 100),
         ])
     }
     

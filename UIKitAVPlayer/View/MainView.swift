@@ -19,6 +19,7 @@ class MainView: UIView {
     */
     // UIView to show the video
     var videoViewTemplate: UIView!
+//    var videoViewTemplate2: UIView!
     var fullScreenButton: UIButton!
     // play button
     var playButton: UIButton!
@@ -39,10 +40,14 @@ class MainView: UIView {
         super.init(frame: frame)
 //        self.backgroundColor = .white
         setupVideoViewTemplate()
+//        videoViewTemplate2 = UIView()
+//        videoViewTemplate2.backgroundColor = .blue
+//        videoViewTemplate2.translatesAutoresizingMaskIntoConstraints = false
+//        self.addSubview(videoViewTemplate2)
         setupPlayButton()
         setupClipTableView()
         setupExportClipTimeButton()
-        setupFullScreenPlayerButton()
+//        setupFullScreenPlayerButton()
     }
     
     required init?(coder: NSCoder) {
@@ -142,8 +147,13 @@ class MainView: UIView {
             videoViewTemplate.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
             videoViewTemplate.heightAnchor.constraint(equalToConstant: 250),
             
-            fullScreenButton.topAnchor.constraint(equalTo: self.videoViewTemplate.topAnchor, constant: 20),
-            fullScreenButton.leadingAnchor.constraint(equalTo: self.videoViewTemplate.leadingAnchor, constant: 20),
+//            videoViewTemplate2.topAnchor.constraint(equalTo: videoViewTemplate.safeAreaLayoutGuide.bottomAnchor),
+//            videoViewTemplate2.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
+//            videoViewTemplate2.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
+//            videoViewTemplate2.heightAnchor.constraint(equalToConstant: 200),
+            
+//            fullScreenButton.topAnchor.constraint(equalTo: self.videoViewTemplate.topAnchor, constant: 20),
+//            fullScreenButton.leadingAnchor.constraint(equalTo: self.videoViewTemplate.leadingAnchor, constant: 20),
             
             playButton.centerXAnchor.constraint(equalTo: self.circleViewUnderPlayButton.centerXAnchor),
             playButton.centerYAnchor.constraint(equalTo: self.circleViewUnderPlayButton.centerYAnchor),
@@ -176,8 +186,8 @@ class MainView: UIView {
             videoViewTemplate.trailingAnchor.constraint(equalTo: self.centerXAnchor),
             videoViewTemplate.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             
-            fullScreenButton.topAnchor.constraint(equalTo: self.videoViewTemplate.topAnchor, constant: 20),
-            fullScreenButton.leadingAnchor.constraint(equalTo: self.videoViewTemplate.leadingAnchor, constant: 20),
+//            fullScreenButton.topAnchor.constraint(equalTo: self.videoViewTemplate.topAnchor, constant: 20),
+//            fullScreenButton.leadingAnchor.constraint(equalTo: self.videoViewTemplate.leadingAnchor, constant: 20),
             
             playButton.centerXAnchor.constraint(equalTo: self.circleViewUnderPlayButton.centerXAnchor),
             playButton.centerYAnchor.constraint(equalTo: self.circleViewUnderPlayButton.centerYAnchor),

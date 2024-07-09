@@ -12,12 +12,13 @@
 		CD0E6C9B2C3442FB003BCD36 /* InputUrlTextFieldViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0E6C9A2C3442FB003BCD36 /* InputUrlTextFieldViewViewController.swift */; };
 		CD0E6C9D2C3448CE003BCD36 /* InputUrlTextFieldButtonTapDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0E6C9C2C3448CE003BCD36 /* InputUrlTextFieldButtonTapDelegate.swift */; };
 		CD0E6CC52C36BA1C003BCD36 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = CD0E6CC42C36BA1C003BCD36 /* .gitignore */; };
+		CD0E6CC82C3D2BE0003BCD36 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0E6CC72C3D2BE0003BCD36 /* Notification.swift */; };
 		CD44A77A2C2C4A1E00022D7E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD44A7792C2C4A1E00022D7E /* AppDelegate.swift */; };
 		CD44A77C2C2C4A1E00022D7E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD44A77B2C2C4A1E00022D7E /* SceneDelegate.swift */; };
 		CD44A77E2C2C4A1E00022D7E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD44A77D2C2C4A1E00022D7E /* ViewController.swift */; };
 		CD44A7832C2C4A2000022D7E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD44A7822C2C4A2000022D7E /* Assets.xcassets */; };
 		CD44A7862C2C4A2000022D7E /* Base in Resources */ = {isa = PBXBuildFile; fileRef = CD44A7852C2C4A2000022D7E /* Base */; };
-		CD44A78F2C2E404D00022D7E /* VideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD44A78E2C2E404D00022D7E /* VideoViewController.swift */; };
+		CD44A78F2C2E404D00022D7E /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD44A78E2C2E404D00022D7E /* PlayerViewController.swift */; };
 		CD44A7912C30096300022D7E /* MainViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD44A7902C30096300022D7E /* MainViewViewController.swift */; };
 		CD44A7942C314A9C00022D7E /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD44A7932C314A9C00022D7E /* DataModel.swift */; };
 		CD44A7962C31BC4600022D7E /* HomePageNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD44A7952C31BC4600022D7E /* HomePageNavigationViewController.swift */; };
@@ -37,6 +38,7 @@
 		CD0E6C9A2C3442FB003BCD36 /* InputUrlTextFieldViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputUrlTextFieldViewViewController.swift; sourceTree = "<group>"; };
 		CD0E6C9C2C3448CE003BCD36 /* InputUrlTextFieldButtonTapDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputUrlTextFieldButtonTapDelegate.swift; sourceTree = "<group>"; };
 		CD0E6CC42C36BA1C003BCD36 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		CD0E6CC72C3D2BE0003BCD36 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		CD44A7762C2C4A1E00022D7E /* UIKitAVPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UIKitAVPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD44A7792C2C4A1E00022D7E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CD44A77B2C2C4A1E00022D7E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -44,7 +46,7 @@
 		CD44A7822C2C4A2000022D7E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CD44A7852C2C4A2000022D7E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CD44A7872C2C4A2000022D7E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CD44A78E2C2E404D00022D7E /* VideoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewController.swift; sourceTree = "<group>"; };
+		CD44A78E2C2E404D00022D7E /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		CD44A7902C30096300022D7E /* MainViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewViewController.swift; sourceTree = "<group>"; };
 		CD44A7932C314A9C00022D7E /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		CD44A7952C31BC4600022D7E /* HomePageNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageNavigationViewController.swift; sourceTree = "<group>"; };
@@ -85,6 +87,14 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		CD0E6CC62C3D2BC9003BCD36 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				CD0E6CC72C3D2BE0003BCD36 /* Notification.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 		CD44A76D2C2C4A1E00022D7E = {
 			isa = PBXGroup;
 			children = (
@@ -107,6 +117,7 @@
 		CD44A7782C2C4A1E00022D7E /* UIKitAVPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				CD0E6CC62C3D2BC9003BCD36 /* Extension */,
 				CD44A79E2C330FD700022D7E /* Protocol */,
 				CD44A7922C314A8700022D7E /* Model */,
 				CD44A7972C32938C00022D7E /* View */,
@@ -124,7 +135,7 @@
 		CD44A78D2C2E401400022D7E /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				CD44A78E2C2E404D00022D7E /* VideoViewController.swift */,
+				CD44A78E2C2E404D00022D7E /* PlayerViewController.swift */,
 				CD44A7902C30096300022D7E /* MainViewViewController.swift */,
 				CD44A7952C31BC4600022D7E /* HomePageNavigationViewController.swift */,
 				CD0E6C9A2C3442FB003BCD36 /* InputUrlTextFieldViewViewController.swift */,
@@ -289,10 +300,11 @@
 				CD44A77C2C2C4A1E00022D7E /* SceneDelegate.swift in Sources */,
 				CD0E6C9B2C3442FB003BCD36 /* InputUrlTextFieldViewViewController.swift in Sources */,
 				CD0E6C9D2C3448CE003BCD36 /* InputUrlTextFieldButtonTapDelegate.swift in Sources */,
-				CD44A78F2C2E404D00022D7E /* VideoViewController.swift in Sources */,
+				CD44A78F2C2E404D00022D7E /* PlayerViewController.swift in Sources */,
 				CD44A7A42C33107900022D7E /* MainViewDelegate.swift in Sources */,
 				CD44A7942C314A9C00022D7E /* DataModel.swift in Sources */,
 				CD44A79D2C32EE5500022D7E /* AVPlayerModel.swift in Sources */,
+				CD0E6CC82C3D2BE0003BCD36 /* Notification.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

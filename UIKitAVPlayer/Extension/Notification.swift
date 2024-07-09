@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+extension Notification.Name {
+    static let VLCMediaPlayerStateChanged = Notification.Name("VLCMediaPlayerStateChanged")
+    static let VLCMediaPlayerTimeChanged = Notification.Name("VLCMediaPlayerTimeChanged")
+}
