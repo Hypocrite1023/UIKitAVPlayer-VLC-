@@ -12,7 +12,7 @@ import Combine
 import MobileVLCKit
 
 ///啟動播放器需要至少一個參數 AVAsset, delegate?如果需要顯示剪輯時間
-class VideoViewController: UIViewController {
+class PlayerViewController: UIViewController {
     
     //MARK: - Gesture
     var longTapHoldGesture: UIPanGestureRecognizer? //長按並拖動手指快轉
@@ -47,7 +47,7 @@ class VideoViewController: UIViewController {
     init(mediaPlayer: VLCMediaPlayer, frame: CGRect) {
         playerView = PlayerView(frame: frame)
         self.mediaPlayer = mediaPlayer
-        mediaPlayer.drawable = playerView.videoRenderView
+//        mediaPlayer.drawable = playerView.videoRenderView
         self.playerView.frame = frame
         super.init(nibName: nil, bundle: nil)
     }
@@ -66,6 +66,8 @@ class VideoViewController: UIViewController {
 //        playerView.frame = CGRect(x: 0, y: 200, width: 300, height: 200)
 //        print(playerView.bounds)
         self.view.addSubview(playerView)
+        mediaPlayer.drawable = playerView.videoRenderView
+        mediaPlayer.play()
 //        self.view.bounds = CGRect(x: 0, y: 200, width: 300, height: 200)
 //        playerView.player = videoPlayerModel.player
         
@@ -107,7 +109,43 @@ class VideoViewController: UIViewController {
                 }
             }
             .store(in: &cancellables)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(mediaPlayerStateChanged), name: .VLCMediaPlayerStateChanged, object: mediaPlayer)
+    }
+    @objc func mediaPlayerStateChanged(notification: NSNotification) {
+        guard let mediaPlayer = notification.object as? VLCMediaPlayer else { return }
+        switch mediaPlayer.state {
+        case .buffering:
+            print("Buffering...")
+        case .playing:
+            print("Playing...")
+        case .stopped:
+            print("Stopped")
+        case .paused:
+            print("Paused")
+        case .ended:
+            print("Ended")
+        case .error:
+            print("Error")
+        default:
+            break
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print("viewDidAppear")
+        mediaPlayer.drawable = playerView.videoRenderView
+        // 檢查 mediaPlayer 狀態
+        print("mediaPlayer state before play: \(mediaPlayer.state)")
+
+        mediaPlayer.pause()
+        mediaPlayer.play()
+
+        // 再次檢查 mediaPlayer 狀態
+        print("mediaPlayer state after play: \(mediaPlayer.state)")
+        // 調試輸出
+        print("videoRenderView frame: \(playerView.videoRenderView.frame)")
+        print("videoRenderView bounds: \(playerView.videoRenderView.bounds)")
     }
     fileprivate func setupGesture() {
         longTapHoldGesture = UIPanGestureRecognizer(target: self, action: #selector(longTapHoldSwipeGesture))
@@ -251,10 +289,14 @@ class VideoViewController: UIViewController {
                 if orientation.isLandscape {
                     
                     self.playerView.frame = self.view.bounds
+                    self.playerView.mergeView.frame = self.view.bounds
+                    self.playerView.setupConstraints()
 //                    self.playerView.playerLayer.videoGravity = .resizeAspect
                     print("橫向")
                 } else if orientation.isPortrait {
                     self.playerView.frame = self.view.bounds
+                    self.playerView.mergeView.frame = self.view.bounds
+                    self.playerView.setupConstraints()
 //                    self.playerView.playerLayer.videoGravity = .resizeAspect
                     print("縱向")
                 }
@@ -274,7 +316,7 @@ class VideoViewController: UIViewController {
 
 
 
-extension VideoViewController: PlayerViewDelegate {
+extension PlayerViewController: PlayerViewDelegate {
     func playOrPauseVideo(sender: UIButton) {
 //        if videoPlayerModel.player.timeControlStatus == .playing {
 //            videoPlayerModel.player.pause()
